@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7OzPQwQGpgt6qi4v1Yri9NxzaG14Vay5+vYASMkMu5BoEQlVfERN7U4LUws5XNsTdUUjZdW9rVetl5bvOTNP5Q==",
+  "dgSpecHash": "Ugle6Y/MiFiKgnBJCeTEsJgHM9I87D21EXAPIr8/HkU9wAtpfUdIEWS/KOLops+8/LdZ8JV/DAMfqXFMNbi4BQ==",
   "success": true,
-  "projectFilePath": "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj",
+  "projectFilePath": "D:\\PeopleListCore\\TestCore\\TestCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\faden\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\faden\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",

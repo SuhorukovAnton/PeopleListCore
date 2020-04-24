@@ -9477,11 +9477,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj",
+      "projectUniqueName": "D:\\PeopleListCore\\TestCore\\TestCore.csproj",
       "projectName": "TestCore",
-      "projectPath": "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj",
+      "projectPath": "D:\\PeopleListCore\\TestCore\\TestCore.csproj",
       "packagesPath": "C:\\Users\\faden\\.nuget\\packages\\",
-      "outputPath": "D:\\programs\\PeopleListCore\\TestCore\\obj\\",
+      "outputPath": "D:\\PeopleListCore\\TestCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -9501,8 +9501,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj": {
-              "projectPath": "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj"
+            "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj": {
+              "projectPath": "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj"
             }
           }
         }

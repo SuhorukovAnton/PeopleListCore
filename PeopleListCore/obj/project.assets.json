@@ -8980,11 +8980,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
+      "projectUniqueName": "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
       "projectName": "PeopleListCore",
-      "projectPath": "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
+      "projectPath": "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
       "packagesPath": "C:\\Users\\faden\\.nuget\\packages\\",
-      "outputPath": "D:\\programs\\PeopleListCore\\PeopleListCore\\obj\\",
+      "outputPath": "D:\\PeopleListCore\\PeopleListCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

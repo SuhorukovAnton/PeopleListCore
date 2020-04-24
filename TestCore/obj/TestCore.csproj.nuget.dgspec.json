@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj": {}
+    "D:\\PeopleListCore\\TestCore\\TestCore.csproj": {}
   },
   "projects": {
-    "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj": {
+    "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
+        "projectUniqueName": "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
         "projectName": "PeopleListCore",
-        "projectPath": "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
+        "projectPath": "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj",
         "packagesPath": "C:\\Users\\faden\\.nuget\\packages\\",
-        "outputPath": "D:\\programs\\PeopleListCore\\PeopleListCore\\obj\\",
+        "outputPath": "D:\\PeopleListCore\\PeopleListCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -133,14 +133,14 @@
         }
       }
     },
-    "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj": {
+    "D:\\PeopleListCore\\TestCore\\TestCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj",
+        "projectUniqueName": "D:\\PeopleListCore\\TestCore\\TestCore.csproj",
         "projectName": "TestCore",
-        "projectPath": "D:\\programs\\PeopleListCore\\TestCore\\TestCore.csproj",
+        "projectPath": "D:\\PeopleListCore\\TestCore\\TestCore.csproj",
         "packagesPath": "C:\\Users\\faden\\.nuget\\packages\\",
-        "outputPath": "D:\\programs\\PeopleListCore\\TestCore\\obj\\",
+        "outputPath": "D:\\PeopleListCore\\TestCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -160,8 +160,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj": {
-                "projectPath": "D:\\programs\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj"
+              "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj": {
+                "projectPath": "D:\\PeopleListCore\\PeopleListCore\\PeopleListCore.csproj"
               }
             }
           }
