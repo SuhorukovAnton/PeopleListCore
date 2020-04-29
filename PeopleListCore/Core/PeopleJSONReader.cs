@@ -14,7 +14,13 @@ namespace PeopleList.Core
 {
     public class PeopleJSONReader : IReader
     {
-        public Logger logger = LogManager.GetCurrentClassLogger();
+        private Logger logger { get; set; }
+        private PeopleManager manager;
+        public PeopleJSONReader(PeopleManager manager)
+        {
+            this.manager = manager;
+            logger = LogManager.GetCurrentClassLogger();
+        }
         public async Task AddPeople(string path)
         {
             try
@@ -31,9 +37,9 @@ namespace PeopleList.Core
                 var peoples = JsonConvert.DeserializeObject<List<People>>(text);
                 foreach (var people in peoples)
                 {
-                    if (!await HelperConnect.FindEmail(people.Email)) {
+                    if (!await manager.FindEmail(people.Email)) {
 
-                        await HelperConnect.AddPeople(people);
+                        await manager.AddPeople(people);
                     }
                 }
             }catch(Exception e)
@@ -44,7 +50,7 @@ namespace PeopleList.Core
 
         public void Create(string path)
         {
-            var peoples = HelperConnect.GetPeoples();
+            var peoples = manager.GetPeoples();
             var json = JsonConvert.SerializeObject(peoples);
             using (var sw = new StreamWriter(path, false, Encoding.UTF8))
             {

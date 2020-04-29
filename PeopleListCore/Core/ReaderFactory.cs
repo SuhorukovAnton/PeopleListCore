@@ -6,17 +6,22 @@ namespace PeopleList.Core
 {
     public class ReaderFactory
     {
-        private PeopleJSONReader JSONReader { get; set; }
-        private PeopleXmlReader XmlReader { get; set; }
+        private PeopleJSONReader peopleJSON { get; set; }
+        private PeopleXmlReader peopleXml { get; set; }
 
+        public ReaderFactory(PeopleJSONReader peopleJSON, PeopleXmlReader peopleXml)
+        {
+            this.peopleJSON = peopleJSON;
+            this.peopleXml = peopleXml;
+        }
         internal IReader GetFactory(string format)
         {
             switch (format)
             {
                 case "xml":
-                    return XmlReader ?? (XmlReader = new PeopleXmlReader());
+                    return peopleXml;
                 case "json":
-                    return JSONReader ?? (JSONReader = new PeopleJSONReader());
+                    return peopleJSON;
             }
             throw new FileFormatException();
         }

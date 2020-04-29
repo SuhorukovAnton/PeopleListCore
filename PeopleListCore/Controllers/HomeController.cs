@@ -21,17 +21,22 @@ namespace PeopleListCore.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        public static Logger logger = LogManager.GetCurrentClassLogger();
-        private ReaderFactory ReaderFactory { get; set; }
+        private Logger logger;
+        private HelperWorkWithData helperWork;
+        private ReaderFactory readerFactory;
         private readonly IConfiguration config;
         private readonly IStringLocalizer<Resource> Resource;
-        IWebHostEnvironment appEnvironment;
-        public HomeController(IConfiguration config, IStringLocalizer<Resource> Resource, IWebHostEnvironment appEnvironment)
+        private PeopleManager manager;
+        private IWebHostEnvironment appEnvironment;
+        public HomeController(IConfiguration config, IStringLocalizer<Resource> Resource, IWebHostEnvironment appEnvironment, PeopleManager manager, ReaderFactory readerFactory, HelperWorkWithData helperWork)
         {
+            this.helperWork = helperWork;
+            logger = LogManager.GetCurrentClassLogger();
             this.appEnvironment = appEnvironment;
             this.config = config;
             this.Resource = Resource;
-            ReaderFactory = new ReaderFactory();
+            this.manager = manager;
+            this.readerFactory = readerFactory;
         }
         [AllowAnonymous]
         public async Task<ActionResult> Index()
@@ -45,8 +50,16 @@ namespace PeopleListCore.Controllers
             if (!User.IsInRole("SuperAdmin"))
             {
                 ViewData["hidden"] = true;
+                if (User.IsInRole("Admin"))
+                {
+                    ViewData["canAdd"] = true;
+                }
             }
-            return View(HelperConnect.GetPeoples());
+            else
+            {
+                ViewData["canAdd"] = true;
+            }
+            return View(manager.GetPeoples());
         }
 
         [Authorize(Roles = "Admin, SuperAdmin")]
@@ -61,10 +74,15 @@ namespace PeopleListCore.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(FormAdd formAdd)
         {
-            if (ModelState.IsValid)
+            var isFind = await manager.FindEmail(formAdd.Email);
+
+            if (isFind)
             {
-                formAdd.Password = HelperWorkWithData.GetHash(formAdd.Password);
-                await HelperConnect.AddPeople(formAdd);
+                ModelState.AddModelError("Email", Resource["EmailIsBusy"]);
+            }else if (ModelState.IsValid)
+            {
+                formAdd.Password = helperWork.GetHash(formAdd.Password);
+                await manager.AddPeople(formAdd);
                 return RedirectToAction("Index", "Home");
             }
             await WriteLangsToViewBag();
@@ -74,7 +92,7 @@ namespace PeopleListCore.Controllers
         [Authorize(Roles = "SuperAdmin")]
         public async Task<ActionResult> Remove(int id)
         {
-            await HelperConnect.RemovePeople(id);
+            await manager.RemovePeople(id);
             return RedirectToAction("Index", "Home");
         }
 
@@ -88,9 +106,9 @@ namespace PeopleListCore.Controllers
         public async Task<ActionResult> Edit(int id, FormEdit formEdit)
         {
             ViewData["canEdit"] = id == int.Parse(User.Identity.Name) || User.IsInRole("SuperAdmin");
-            var peopleTmp = await HelperConnect.GetPeople(id);
+            var peopleTmp = await manager.GetPeople(id);
             ViewData["Img"] = peopleTmp.Img;
-            var isFind = await HelperConnect.FindEmail(formEdit.Email) && peopleTmp.Email != formEdit.Email;
+            var isFind = await manager.FindEmail(formEdit.Email) && peopleTmp.Email != formEdit.Email;
 
             if (isFind)
             {
@@ -98,7 +116,7 @@ namespace PeopleListCore.Controllers
             }
             else if (ModelState.IsValid)
             {
-                await HelperConnect.EditPeople(formEdit);
+                await manager.EditPeople(formEdit);
                 ViewData["Message"] = Resource["SaveIsSuccessfully"];
             }
             await WriteLangsToViewBag();
@@ -110,7 +128,7 @@ namespace PeopleListCore.Controllers
             if (img != null)
             {
                 
-                await HelperConnect.AddImg(id, await img.Save(id, appEnvironment));
+                await manager.AddImg(id, await helperWork.Save(img, id));
 
                 ViewData["canEdit"] = true;
                 await WriteLangsToViewBag();
@@ -125,8 +143,8 @@ namespace PeopleListCore.Controllers
         {
             if (file != null)
             {
-                var path =await file.Save(appEnvironment);
-                var reader = ReaderFactory.GetFactory(Path.GetExtension(file.FileName).Substring(1));
+                var path =await helperWork.Save(file);
+                var reader = readerFactory.GetFactory(Path.GetExtension(file.FileName).Substring(1));
                 await reader.AddPeople(appEnvironment.WebRootPath + "/files/download/" + path);
             }
 
@@ -145,12 +163,12 @@ namespace PeopleListCore.Controllers
             {
                 ViewData["hidden"] = true;
             }
-            return View(HelperConnect.GetPeoples());
+            return View(manager.GetPeoples());
         }
 
         private async Task<FormEdit> GetFormEdit(int id)
         {
-            var people = await HelperConnect.GetPeople(id);
+            var people = await manager.GetPeople(id);
             ViewData["Img"] = people.Img;
 
             return new FormEdit
@@ -178,7 +196,7 @@ namespace PeopleListCore.Controllers
 
         public FileResult UnloadPeoples(string format)
         {
-            var reader = ReaderFactory.GetFactory(format);
+            var reader = readerFactory.GetFactory(format);
             reader.Create(appEnvironment.WebRootPath + "/files/" + "peoples." + format);
             string file_path = Path.Combine(appEnvironment.ContentRootPath, "wwwroot/files/peoples." + format);
             string file_type = "application/" + format;
@@ -188,13 +206,13 @@ namespace PeopleListCore.Controllers
 
         public async Task WriteLangsToViewBag()
         {
-            var people = await HelperConnect.GetPeople(int.Parse(User.Identity.Name));
+            var people = await manager.GetPeople(int.Parse(User.Identity.Name));
             ViewData["Email"] = people.Email;
             List<string> langs = new List<string>(config["Langs"].Split(','));
             List<string> nameLangs = new List<string>();
             langs.ForEach(elem =>
             {
-                nameLangs.Add(HelperWorkWithData.FirstUpper(new CultureInfo(elem).NativeName));
+                nameLangs.Add(helperWork.FirstUpper(new CultureInfo(elem).NativeName));
             });
             ViewBag.langs = langs;
             ViewBag.langsFullName = nameLangs;

@@ -8,6 +8,9 @@ using PeopleListCore.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using PeopleListCore.Helpers;
+using PeopleList.Core;
 
 namespace PeopleListCore
 {
@@ -30,17 +33,21 @@ namespace PeopleListCore
                 })
                 .AddViewLocalization();
 
-
+           
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
-
-            services.AddControllersWithViews();
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<PeopleContext>(options => options.UseMySql(connection));
             services.AddDistributedMemoryCache();
-            services.AddSession();
             services.AddSingleton<ErrorMessageTranslationService>();
+            services.AddScoped<ReaderFactory>();
+            services.AddScoped<PeopleJSONReader>();
+            services.AddScoped<PeopleXmlReader>();
+            services.AddScoped<PeopleManager>();
+            services.AddScoped<HelperWorkWithData>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,7 +76,6 @@ namespace PeopleListCore
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseSession();
             app.UseAuthentication();    
             app.UseAuthorization();     
             app.UseEndpoints(endpoints =>

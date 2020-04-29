@@ -17,7 +17,7 @@
                 @if (ViewData["hidden"] == null)
                 {
                     <span class="float-xl-right">
-                        @Html.ActionLink(Resource["Edit"].Value, "Read","Home", new { id = b.id })
+                        @Html.ActionLink(Resource["Edit"].Value, "Read", "Home", new { id = b.id })
                     </span>
                 }
             </span>
@@ -25,11 +25,14 @@
     }
 </ol>
 <br>
-@using (Html.BeginForm("OpenAdd", "Home"))
+@if (ViewData["canAdd"] != null)
 {
-    <button class="btn btn-lg btn-primary btn-block" id="Add" type="submit">@Resource["Add"]</button>
+    @using (Html.BeginForm("OpenAdd", "Home"))
+    {
+        <button class="btn btn-lg btn-primary btn-block" id="Add" type="submit">@Resource["Add"]</button>
+    }
+    <br>
 }
-<br>
 @using (Html.BeginForm("UnloadPeoples", "Home", new { format = "xml" }))
 {
     <button class="btn btn-lg btn-primary btn-block" id="Add" type="submit">@Resource["Unload"] XML</button>

@@ -18,8 +18,12 @@ namespace PeopleListCore.Controllers
     {
         private readonly IConfiguration config;
         private readonly IStringLocalizer<Resource> Resource;
-        public AccountController(IConfiguration config, IStringLocalizer<Resource> Resource)
+        private HelperWorkWithData helperWork;
+        private PeopleManager manager;
+        public AccountController(IConfiguration config, IStringLocalizer<Resource> Resource, PeopleManager manager, HelperWorkWithData helperWork)
         {
+            this.helperWork = helperWork;
+            this.manager = manager;
             this.config = config;
             this.Resource = Resource;
         }
@@ -30,7 +34,7 @@ namespace PeopleListCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var people = await HelperConnect.FindUser(form.Email, form.Password);
+                var people = await manager.FindUser(form.Email, form.Password);
                 if (people != null)
                 {
                     await Authenticate(people.id.ToString(), people.Role); 
@@ -83,7 +87,7 @@ namespace PeopleListCore.Controllers
             List<string> nameLangs = new List<string>();
             langs.ForEach(elem =>
             {
-                nameLangs.Add(HelperWorkWithData.FirstUpper(new CultureInfo(elem).NativeName));
+                nameLangs.Add(helperWork.FirstUpper(new CultureInfo(elem).NativeName));
             });
             ViewBag.langs = langs;
             ViewBag.langsFullName = nameLangs;

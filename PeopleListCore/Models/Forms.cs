@@ -27,7 +27,7 @@ namespace PeopleListCore.Models
         [Required( ErrorMessage = "EmailRequired")]
         [DataType(DataType.EmailAddress)]
         [ValidEmail( ErrorMessage = "EmailValid")]
-        [NoFindEmail( ErrorMessage = "EmailIsBusy")]
+       
         public string Email { set; get; }
 
         [Required( ErrorMessage = "BirthdayRequired")]

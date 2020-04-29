@@ -10,10 +10,12 @@ namespace PeopleList.Core
 {
     public class PeopleXmlReader : IReader
     {
-        public Logger Logger { get; set; }
-        public PeopleXmlReader()
+        private Logger logger { get; set; }
+        private PeopleManager manager;
+        public PeopleXmlReader(PeopleManager manager)
         {
-           Logger = LogManager.GetCurrentClassLogger();
+            this.manager = manager;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         public async Task AddPeople(string path)
@@ -32,22 +34,22 @@ namespace PeopleList.Core
                     {
                         var people = new People();
                         people.ReadXml(reader);
-                        if (!await HelperConnect.FindEmail(people.Email))
+                        if (!await manager.FindEmail(people.Email))
                         {
-                            await HelperConnect.AddPeople(people);
+                            await manager.AddPeople(people);
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Logger.Error("Wrong format XML:" + e.Message);
+                logger.Error("Wrong format XML:" + e.Message);
             }
         }
 
         public void Create(string path)
         {
-            var peoples = HelperConnect.GetPeoples();
+            var peoples = manager.GetPeoples();
             var settings = new XmlWriterSettings
             {
                 Indent = true

@@ -127,37 +127,7 @@ namespace PeopleListCore.Models
         }
     }
 
-    public class NoFindEmail : ValidationAttribute
-    {
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var email = value as string;
-            if (email == null)
-            {
-                return new ValidationResult(GetErrorMessage(validationContext));
-            }
-            else if (!HelperConnect.FindEmail(email).Result)
-            {
-                return ValidationResult.Success;
-            }
-            else
-            {
-                return new ValidationResult(GetErrorMessage(validationContext));
-            }
-        }
-        private string GetErrorMessage(ValidationContext validationContext)
-        {
-            if (string.IsNullOrEmpty(ErrorMessage))
-            {
-                return "Invalid CPF";
-            }
-
-            ErrorMessageTranslationService errorTranslation = validationContext.GetService(typeof(ErrorMessageTranslationService)) as ErrorMessageTranslationService;
-            return errorTranslation.GetLocalizedError(ErrorMessage);
-        }
-    }
-
+   
     public class ErrorMessageTranslationService
     {
         private readonly IStringLocalizer<Resource> _sharedLocalizer;

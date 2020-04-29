@@ -14,20 +14,17 @@ using PeopleListCore.Models;
 
 namespace PeopleListCore.Helpers
 {
-    public static class HelperWorkWithData
+    public class HelperWorkWithData
     {
-        private static byte[] salt;
-        static HelperWorkWithData()
+        private byte[] salt;
+        private IWebHostEnvironment appEnvironment;
+        public HelperWorkWithData(IConfiguration config, IWebHostEnvironment appEnvironment)
         {
-            var builder = new ConfigurationBuilder();
-            builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder.AddJsonFile("appsettings.json");
-            var config = builder.Build();
-            string str = config["salt"];
-            salt = Encoding.UTF8.GetBytes(str);
+            salt = Encoding.UTF8.GetBytes(config["salt"]);
+            this.appEnvironment = appEnvironment;
         }
 
-        public static string GetHash(string password)
+        public string GetHash(string password)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
                     password: password,
@@ -37,7 +34,7 @@ namespace PeopleListCore.Helpers
                     numBytesRequested: 256 / 8));
         }
 
-        public static async Task<string> Save(this IFormFile img, int id, IWebHostEnvironment appEnvironment)
+        public async Task<string> Save(IFormFile img, int id)
         {
             string path = id + Path.GetExtension(img.FileName);
             using (var fileStream = new FileStream(appEnvironment.WebRootPath + "/files/imgs/" + path, FileMode.Create))
@@ -47,7 +44,7 @@ namespace PeopleListCore.Helpers
             return path;
         }
 
-        public static async Task<string> Save(this IFormFile file, IWebHostEnvironment appEnvironment)
+        public async Task<string> Save(IFormFile file)
         {
             string path = "peoples" + Path.GetExtension(file.FileName);
             using (var fileStream = new FileStream(appEnvironment.WebRootPath + "/files/download/" + path, FileMode.Create))
@@ -57,7 +54,7 @@ namespace PeopleListCore.Helpers
             return path;
         }
 
-        public static string TransformDate(string date)
+        public  string TransformDate(string date)
         {
             date = date.Split(' ')[0];
             var tmp = date.Split('.');
@@ -67,7 +64,7 @@ namespace PeopleListCore.Helpers
             }
             else return null;
         }
-        public static string FirstUpper(string str)
+        public  string FirstUpper(string str)
         {
             return str.Substring(0, 1).ToUpper() + (str.Length > 1 ? str.Substring(1) : "");
         }
