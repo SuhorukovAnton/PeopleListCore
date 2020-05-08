@@ -1,7 +1,7 @@
 /packages
 /.vs
 /PeopleListCore/bin
-/PeopleListCore/obj/Debug
+/PeopleListCore/obj
 /PeopleListCore/node_modules
 /TestCore/bin
 /TestCore/obj
